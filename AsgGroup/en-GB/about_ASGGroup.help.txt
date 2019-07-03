@@ -1,0 +1,14 @@
+PSTOPIC
+    about_AsgGroup
+
+
+SHORT DESCRIPTION
+    AsgGroup assists in performing certain generic tasks within PowerShell using functions.
+
+
+LONG DESCRIPTION
+    AsgGroup provides assistance in performing generic tasks within PowerShell, with the help of advanced functions.
+
+
+DETAILED DESCRIPTION
+    This module helps in performing certain generic tasks that are sometimes required within PowerShell, such as the creation of encrypted password files and utilising them in creating credential objects.
