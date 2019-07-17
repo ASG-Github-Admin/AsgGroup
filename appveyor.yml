@@ -1,18 +1,18 @@
-version: 4.6.0.{build}
+# See http://www.appveyor.com/docs/appveyor-yml for many more options
 
-#Publish to PowerShell Gallery with this key
-environment:
-  my_variable:
-    secure: 59ZslplLCHq0faY9FOimdtrUqjJdxPYHsbgtedVpAlLE7Uiw1aoQqPn12CVFAX3y
-    
-image: WMF 5
+# Allow WMF5 (i.e. PowerShellGallery functionality)
+os: Unstable
+
+# Skip on updates to the readme.
+# We can force this by adding [skip ci] or [ci skip] anywhere in commit message 
 skip_commits:
-  message: /updated readme.*|update readme.*s/
-build: off
+  message: /updated readme.*/
 
-before_test:
-  - echo script1
-  - ps: ./build/dotnet-install.ps1
+install:
+  - cinst pester -y
+
+build: false
 
 test_script:
-  - ps: ./build.ps1
+# Test with native PS version
+  - ps: . .\Tests\appveyor.pester.ps1 -Test -Finalize
