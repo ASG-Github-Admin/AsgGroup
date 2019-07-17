@@ -81,6 +81,7 @@
 
             if ($Name -eq $env:COMPUTERNAME -or $LocalIPAddr.Contains($Name)) {
 
+                # Local computer skipped
                 Write-Debug -Message "'$Name' is equivalent to local computer name variable or IP address(es)"
                 Write-Verbose -Message "'$Name' is the local computer"
                 Write-Warning -Message "'$Name' matches the local computer name or IP address(es)"
@@ -91,7 +92,8 @@
             Write-Debug -Message "Sending IMCP echo request (ping) to '$Name'"
             Write-Verbose -Message "Testing network connection using ping"
             $Ping = [System.Net.NetworkInformation.Ping]::new()
-            $PingTest = if ($Ping.Send($Name) -eq "Success") { Write-Output -InputObject $true }
+            $PingTest = $Ping.Send($Name)
+            $PingTestStatus = if ($Ping.Send($Name).Status -eq "Success") { Write-Output -InputObject $true }
             else { Write-Output -InputObject $false }
 
             # Remote IP address
@@ -133,7 +135,7 @@
             $Obj = [pscustomobject]@{
 
                 ComputerName    = $Name
-                PingSucceeded   = $PingTest
+                PingSucceeded   = $PingTestStatus
                 RemoteIPAddress = $RemIPAddr
                 PortAvailable   = $TCPTest
                 WinRMEnabled    = $WSManTest

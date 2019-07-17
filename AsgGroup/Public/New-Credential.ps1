@@ -45,11 +45,8 @@
         [Parameter(Mandatory, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
         [ValidateScript( 
-            {
-                # File path validation
-                if (Test-Path -Path $PSItem -PathType Leaf) { $true }
-                else { throw "'$PSItem' is an invalid file path." }
-            }
+            { Test-Path -Path $PSItem -PathType Leaf },
+            ErrorMessage = "'{0}' does not exist."
         )]
         [Alias("Path", "FilePath", "PasswordFilePath")]
         [string] $EncryptedPasswordFilePath
@@ -70,7 +67,7 @@
             # Encrypted string read from file
             Write-Debug -Message "Getting encrypted string from '$EncryptedPasswordFilePath'"
             Write-Verbose -Message "Getting encrypted password from file"
-            $EncryptedStr = Get-Content -Path $EncryptedPasswordFilePath -Wait
+            $EncryptedStr = Get-Content -Path $EncryptedPasswordFilePath
 
             # Encrypted string conversion to secure string
             Write-Debug -Message "Converting encrypted string to secure string"

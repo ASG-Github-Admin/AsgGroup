@@ -47,6 +47,13 @@
         # Output file path
         [Parameter(Mandatory, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
+        [ValidateScript(
+            
+            # Parent directory path validation
+            { Split-Path -Path $PSItem -Parent | Test-Path -PathType Container },
+            ErrorMessage = "The parent of the path entered '{0}' does not exist."
+        )]
+        [Alias("File", "FilePath")]
         [string] $Path
     )
 
@@ -66,7 +73,7 @@
             # Secure string password prompt
             Write-Debug -Message "Reading string from host as a secure string"
             Write-Verbose -Message "Prompting for password from host"
-            $Password = (Read-Host -Prompt Password -AsSecureString)
+            $Password = Read-Host -Prompt Password -AsSecureString
 
             # Encrypted string out to file path
             Write-Debug -Message "Converting to encrypted string  and writing to '$Path'"

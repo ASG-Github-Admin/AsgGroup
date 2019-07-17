@@ -42,7 +42,7 @@ function Out-LogFile {
         # Log file path
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
-        [Alias("FilePath")]
+        [Alias("File", "FilePath")]
         [string] $Path,
 
         # Log file entry type
@@ -79,9 +79,9 @@ function Out-LogFile {
             Write-Verbose -Message "Adding entry string to file"
             Out-File -InputObject "[$EntryDateTime] $Level`: $Entry" -FilePath $Path -Append
         
-            # String output to pipeline
             if ($Passthru) {
              
+                # String output to pipeline
                 Write-Debug -Message "Writing '$Entry' to pipeline as 'Passthru' parameter is set to true"
                 Write-Verbose -Message "Writing entry string to pipeline"
                 Write-Output -InputObject $Entry

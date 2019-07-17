@@ -14,7 +14,7 @@
                                 <PropertyName>ComputerName</PropertyName>
                             </ListItem>
                             <ListItem>
-				<PropertyName>PingSucceeded</PropertyName>
+								<PropertyName>PingSucceeded</PropertyName>
                             </ListItem>
                             <ListItem>
                                 <PropertyName>RemoteIPAddress</PropertyName>
@@ -25,7 +25,7 @@
                             <ListItem>
                                 <PropertyName>WinRMEnabled</PropertyName>
                             </ListItem>
-                            <ListItem>
+							<ListItem>
                                 <PropertyName>Version</PropertyName>
                             </ListItem>
                         </ListItems>
