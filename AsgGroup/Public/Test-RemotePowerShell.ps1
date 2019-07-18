@@ -33,8 +33,6 @@
     AsgGroup.TestRemotePowerShell
     #>
     
-    #Requires -Version 6.2
-    
     [CmdLetBinding()]
     param (
 

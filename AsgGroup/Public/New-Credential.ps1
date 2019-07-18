@@ -31,8 +31,6 @@
     System.Management.Automation.PSCredential
     #>
 
-    #Requires -Version 6.2
-
     [CmdLetBinding()]
     param (
         

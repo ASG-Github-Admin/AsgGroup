@@ -39,8 +39,6 @@
     Creates a file using the specified file path.
     #>
     
-    #Requires -Version 6.2
-    
     [CmdLetBinding()]
     param (
 

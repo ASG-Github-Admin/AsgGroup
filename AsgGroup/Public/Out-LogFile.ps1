@@ -34,8 +34,6 @@ function Out-LogFile {
     It also outputs a string object as the log entry with the log level to the specified file path.
     #>
     
-    #Requires -Version 6.2
-    
     [CmdLetBinding()]
     param (
         

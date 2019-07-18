@@ -26,8 +26,6 @@
     System.String
     #>
     
-    #Requires -Version 6.2
-    
     [CmdLetBinding()]
     param (
     
