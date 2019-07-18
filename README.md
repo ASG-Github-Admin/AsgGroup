@@ -1,3 +1,4 @@
+![Build status](https://ci.appveyor.com/api/github/webhook?id=82juhi421dol33i6)
 ---
 
 
