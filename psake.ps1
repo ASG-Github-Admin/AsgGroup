@@ -9,7 +9,7 @@ Properties {
         }
 
     $Timestamp = Get-date -uformat "%Y%m%d-%H%M%S"
-    $PSVersion = $PSVersionTable.PSVersion.Major
+    $PSVersion = "$($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor)"
     $TestFile = "TestResults_PS$PSVersion`_$TimeStamp.xml"
     $lines = '----------------------------------------------------------------------'
 
@@ -60,7 +60,7 @@ Task Build -Depends Test {
     $lines
     
     # Load the module, read the exported functions, update the psd1 FunctionsToExport
-    Set-ModuleFunctions
+    Set-ModuleFunctions -Name $ProjectRoot\$ENV:BHProjectName
 
     # Bump the module version
     Try
