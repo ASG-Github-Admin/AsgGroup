@@ -33,7 +33,7 @@ Copyright = '(c) 2019 ASG Group. All rights reserved.'
 Description = 'ASG Group universal PowerShell module.'
 
 # Minimum version of the PowerShell engine required by this module
-PowerShellVersion = '6.2'
+PowerShellVersion = '6.1'
 
 # Name of the PowerShell host required by this module
 # PowerShellHostName = ''
