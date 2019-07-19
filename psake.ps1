@@ -12,9 +12,9 @@ Properties {
     $Lines = '----------------------------------------------------------------------'
 
     $Verbose = @{ }
-    if ($ENV:BHCommitMessage -match "!verbose") { 
-        
-        $Verbose = @{ Verbose = $True } 
+    if ($ENV:BHCommitMessage -match "!verbose") {
+
+        $Verbose = @{ Verbose = $True }
     }
 }
 
@@ -26,14 +26,14 @@ Task Init {
     Write-Output -InputObject $Lines
     Set-Location -Path $ProjectRoot
     Write-Output -InputObject "`nBuild system details:"
-    Get-Item -Path $ProjectRoot -Filter ENV:BH*
+    Get-Item -Path ENV:BH*
 }
 
 Task Check -Depends Init {
 
     Write-Output -InputObject $Lines
     Write-Output -InputObject "`nStatus: Checking files with 'PSScriptAnalyzer'"
-    Invoke-ScriptAnalyzer -Path $ProjectRoot
+    Invoke-ScriptAnalyzer -Path $ProjectRoot | Format-Table -AutoSize
 }
 
 Task Test -Depends Check {
@@ -47,7 +47,7 @@ Task Test -Depends Check {
 
     # In Appveyor?  Upload our tests! #Abstract this into a function?
     if ($ENV:BHBuildSystem -eq 'AppVeyor') {
-    
+
         (New-Object -TypeName 'System.Net.WebClient').UploadFile(
 
             "https://ci.appveyor.com/api/testresults/nunit/$($ENV:APPVEYOR_JOB_ID)",
@@ -60,7 +60,7 @@ Task Test -Depends Check {
     # Failed tests?
     # Need to tell psake or it will proceed to the deployment. Danger!
     if ($TestRslts.FailedCount -gt 0) {
-        
+
         Write-Error -Message "Build failed due to '$($TestRslts.FailedCount)' failed tests."
     }
     Write-Output -InputObject "`n"
@@ -69,18 +69,18 @@ Task Test -Depends Check {
 Task Build -Depends Test {
 
     Write-Output -InputObject $Lines
-    
+
     # Load the module, read the exported functions, update the psd1 FunctionsToExport
     Set-ModuleFunctions
 
     # Bump the module version
     try {
-    
+
         $Ver = Get-NextPSGalleryVersion -Name $ENV:BHProjectName -ErrorAction Stop
         Update-Metadata -Path $ENV:BHPSModuleManifest -PropertyName ModuleVersion -Value $Ver -ErrorAction Stop
     }
     catch {
-    
+
         "Failed to update version for '$ENV:BHProjectName': $_.`ncontinuing with existing version" |
         Write-Output
     }

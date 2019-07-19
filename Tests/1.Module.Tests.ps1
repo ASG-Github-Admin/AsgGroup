@@ -23,7 +23,7 @@ Describe "General project validation: '$ModuleName'" {
 
     It "Module '$ModuleName' should import cleanly" {
         
-        { Import-Module (Join-Path $ModuleRoot "$ModuleName.psm1") -Force } | Should Not Throw
+        { Import-Module (Join-Path -Path $ModuleRoot -ChildPath "$ModuleName.psm1") -Force } | Should Not Throw
     }
 }
 

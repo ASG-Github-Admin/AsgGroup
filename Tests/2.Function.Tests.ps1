@@ -1,4 +1,4 @@
-Import-Module -Name "$(Split-Path -Path $PSScriptRoot -Parent)\$ModuleName" -Force
+Import-Module -Name $ENV:BHPSModulePath -Force
 
 $PSMajVer = $PSVersionTable.PSVersion.Major
 
