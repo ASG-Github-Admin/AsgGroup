@@ -27,6 +27,7 @@ Task Init {
     Set-Location -Path $ProjectRoot
     Write-Output -InputObject "`nBuild system details:"
     Get-Item -Path ENV:BH*
+    Write-Output -InputObject "`n"
 }
 
 Task Check -Depends Init {
@@ -71,12 +72,12 @@ Task Build -Depends Test {
     Write-Output -InputObject $Lines
 
     # Load the module, read the exported functions, update the psd1 FunctionsToExport
-    Set-ModuleFunctions
+    Set-ModuleFunction
 
     # Bump the module version
     try {
 
-        $Ver = Get-NextPSGalleryVersion -Name $ENV:BHProjectName -ErrorAction Stop
+        $Ver = Get-NextNugetPackageVersion -Name $ENV:BHProjectName -ErrorAction Stop
         Update-Metadata -Path $ENV:BHPSModuleManifest -PropertyName ModuleVersion -Value $Ver -ErrorAction Stop
     }
     catch {
@@ -84,7 +85,6 @@ Task Build -Depends Test {
         "Failed to update version for '$ENV:BHProjectName': $_.`ncontinuing with existing version" |
         Write-Output
     }
-    Write-Output -InputObject "`n"
 }
 
 Task Deploy -Depends Build {

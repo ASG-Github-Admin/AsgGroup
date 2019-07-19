@@ -141,20 +141,20 @@ Describe "'Test-RemotePowerShell' PowerShell $PSMajVer integration test" {
         Set-StrictMode -Version Latest
 
         # Preparation
-        $LogonServer = $env:LOGONSERVER.TrimStart("\\")
+        $NotARealComp = "MadeUpComputerName"
     
         # Function call
         $NoOutput = Test-RemotePowerShell -Name $env:COMPUTERNAME -WarningAction SilentlyContinue
-        $Output = Test-RemotePowerShell -Name $LogonServer
+        $Output = Test-RemotePowerShell -Name $NotARealComp
 
         It "should not create an object when testing local computer" { $NoOutput | Should -BeNullOrEmpty }
 
-        It "should  create a 'TestRemotePowerShell' PowerShell custom object" {
+        It "should create a 'AsgGroup.TestRemotePowerShell' PowerShell custom object" {
             
             $Output | Should -BeTrue
             $Output | Should -BeOfType [pscustomobject]
             $Output.PSObject.TypeNames | Should -Contain "AsgGroup.TestRemotePowerShell"
-            $Output.ComputerName | Should -BeExactly $LogonServer
+            $Output.ComputerName | Should -BeExactly $NotARealComp
         }
     }
 }
