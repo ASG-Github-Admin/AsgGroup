@@ -24,10 +24,10 @@ GUID = '735c9fab-94ba-4801-aed9-ebb34d6e4a35'
 Author = 'Robert Woodward'
 
 # Company or vendor of this module
-CompanyName = 'ASGGroup'
+CompanyName = 'ASG Group'
 
 # Copyright statement for this module
-Copyright = '(c) 2019 ASG Group. All rights reserved.'
+# Copyright = ''
 
 # Description of the functionality provided by this module
 Description = 'ASG Group universal PowerShell module.'

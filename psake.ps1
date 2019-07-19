@@ -1,85 +1,100 @@
 # PSake makes variables declared here available in other scriptblocks
 # Init some things
 Properties {
+
     # Find the build folder based on build system
-        $ProjectRoot = $ENV:BHProjectPath
-        if(-not $ProjectRoot)
-        {
-            $ProjectRoot = $PSScriptRoot
-        }
+    $ProjectRoot = $env:BHProjectPath
+    if (-not $ProjectRoot) { $ProjectRoot = $PSScriptRoot }
 
-    $Timestamp = Get-date -uformat "%Y%m%d-%H%M%S"
-    $PSVersion = "$($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor)"
-    $TestFile = "TestResults_PS$PSVersion`_$TimeStamp.xml"
-    $lines = '----------------------------------------------------------------------'
+    $TimeStamp = Get-Date -UFormat "%Y%m%d-%H%M%S"
+    $PSVerMaj = $PSVersionTable.PSVersion.Major
+    $TestFileName = "TestResults_PS$PSVerMaj`_$TimeStamp.xml"
+    $Lines = '----------------------------------------------------------------------'
 
-    $Verbose = @{}
-    if($ENV:BHCommitMessage -match "!verbose")
-    {
-        $Verbose = @{Verbose = $True}
+    $Verbose = @{ }
+    if ($env:BHCommitMessage -match "!verbose") { 
+        
+        $Verbose = @{ Verbose = $True } 
     }
 }
 
 Task Default -Depends Deploy
+Write-Output -InputObject "`n"
 
 Task Init {
-    $lines
-    Set-Location $ProjectRoot
-    "Build System Details:"
-    Get-Item ENV:BH*
-    "`n"
+
+    Write-Output -InputObject $Lines
+    Set-Location -Path $ProjectRoot
+    Write-Output -InputObject "`nBuild system details:"
+    Get-Item -Filter env:BH*
 }
 
-Task Test -Depends Init  {
-    $lines
-    "`n`tSTATUS: Testing with PowerShell $PSVersion"
+Task Check -Depends Init {
+
+    Write-Output -InputObject $Lines
+    Write-Output -InputObject "`nStatus: Checking files with 'PSScriptAnalyzer'"
+    Invoke-ScriptAnalyzer -Path $ProjectRoot
+}
+
+Task Test -Depends Check {
+
+    Write-Output -InputObject $Lines
+    Write-Output -InputObject "`nStatus: Testing with PowerShell $PSVerMaj`n"
 
     # Gather test results. Store them in a variable and file
-    $TestResults = Invoke-Pester -Path $ProjectRoot\Tests -PassThru -OutputFormat NUnitXml -OutputFile "$ProjectRoot\$TestFile"
+    $TestFilePath = "$ProjectRoot\$TestFileName"
+    $TestRslts = Invoke-Pester -Path $ProjectRoot\Tests -PassThru -OutputFormat NUnitXml -OutputFile $TestFilePath
 
     # In Appveyor?  Upload our tests! #Abstract this into a function?
-    If($ENV:BHBuildSystem -eq 'AppVeyor')
-    {
-        (New-Object 'System.Net.WebClient').UploadFile(
+    if ($env:BHBuildSystem -eq 'AppVeyor') {
+    
+        (New-Object -TypeName 'System.Net.WebClient').UploadFile(
+
             "https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)",
-            "$ProjectRoot\$TestFile" )
+            $TestFilePath
+        )
     }
 
-    Remove-Item "$ProjectRoot\$TestFile" -Force -ErrorAction SilentlyContinue
+    Remove-Item -Path $TestFilePath -Force -ErrorAction SilentlyContinue
 
     # Failed tests?
     # Need to tell psake or it will proceed to the deployment. Danger!
-    if($TestResults.FailedCount -gt 0)
-    {
-        Write-Error "Failed '$($TestResults.FailedCount)' tests, build failed"
+    if ($TestRslts.FailedCount -gt 0) {
+        
+        Write-Error -Message "Build failed due to '$($TestRslts.FailedCount)' failed tests."
     }
-    "`n"
+    Write-Output -InputObject "`n"
 }
 
 Task Build -Depends Test {
-    $lines
+
+    Write-Output -InputObject $Lines
     
     # Load the module, read the exported functions, update the psd1 FunctionsToExport
-    Set-ModuleFunctions -Name $ProjectRoot\$ENV:BHProjectName
+    Set-ModuleFunctions
 
     # Bump the module version
-    Try
-    {
-        $Version = Get-NextPSGalleryVersion -Name $env:BHProjectName -ErrorAction Stop
-        Update-Metadata -Path $env:BHPSModuleManifest -PropertyName ModuleVersion -Value $Version -ErrorAction stop
+    try {
+    
+        $Ver = Get-NextPSGalleryVersion -Name $env:BHProjectName -ErrorAction Stop
+        Update-Metadata -Path $env:BHPSModuleManifest -PropertyName ModuleVersion -Value $Ver -ErrorAction Stop
     }
-    Catch
-    {
-        "Failed to update version for '$env:BHProjectName': $_.`nContinuing with existing version"
+    catch {
+    
+        "Failed to update version for '$env:BHProjectName': $_.`ncontinuing with existing version" |
+        Write-Output
     }
+    Write-Output -InputObject "`n"
 }
 
 Task Deploy -Depends Build {
-    $lines
+
+    Write-Output -InputObject $Lines
 
     $Params = @{
-        Path = $ProjectRoot
-        Force = $true
+
+        Path    = $ProjectRoot
+        Force   = $true
         Recurse = $false # We keep psdeploy artifacts, avoid deploying those : )
     }
     Invoke-PSDeploy @Verbose @Params

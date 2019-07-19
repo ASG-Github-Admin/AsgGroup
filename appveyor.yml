@@ -5,7 +5,7 @@ environment:
   NuGetApiKey:
     secure: 0tvZe6dEee/cDZFSN0U+Uk3MplVMMk1+ZsCLcE2d3o2aBVSbAXMDZ/OJrcaxYBWV
 
-image: Visual Studio 2017
+image: Ubuntu
 
 # Skip on updates to the readme.
 # We can force this by adding [skip ci] or [ci skip] anywhere in commit message
