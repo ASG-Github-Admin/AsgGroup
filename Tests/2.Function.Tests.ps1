@@ -141,7 +141,7 @@ Describe "'Test-RemotePowerShell' PowerShell $PSMajVer integration test" {
         Set-StrictMode -Version Latest
 
         # Preparation
-        $NotARealComp = "MadeUpComputerName"
+        $NotARealComp = "google.com"
     
         # Function call
         $NoOutput = Test-RemotePowerShell -Name $env:COMPUTERNAME -WarningAction SilentlyContinue
