@@ -20,4 +20,4 @@ build: false
 test_script:
 # Test with native PS version
   # - ps: . .\Tests\appveyor.pester.ps1 -Test -Finalize
-  - ps: . .\build.ps1
+  - pwsh: . .\build.ps1
