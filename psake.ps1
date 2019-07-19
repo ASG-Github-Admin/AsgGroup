@@ -3,7 +3,7 @@
 Properties {
 
     # Find the build folder based on build system
-    $ProjectRoot = $env:BHProjectPath
+    $ProjectRoot = $ENV:BHProjectPath
     if (-not $ProjectRoot) { $ProjectRoot = $PSScriptRoot }
 
     $TimeStamp = Get-Date -UFormat "%Y%m%d-%H%M%S"
@@ -12,7 +12,7 @@ Properties {
     $Lines = '----------------------------------------------------------------------'
 
     $Verbose = @{ }
-    if ($env:BHCommitMessage -match "!verbose") { 
+    if ($ENV:BHCommitMessage -match "!verbose") { 
         
         $Verbose = @{ Verbose = $True } 
     }
@@ -46,11 +46,11 @@ Task Test -Depends Check {
     $TestRslts = Invoke-Pester -Path $ProjectRoot\Tests -PassThru -OutputFormat NUnitXml -OutputFile $TestFilePath
 
     # In Appveyor?  Upload our tests! #Abstract this into a function?
-    if ($env:BHBuildSystem -eq 'AppVeyor') {
+    if ($ENV:BHBuildSystem -eq 'AppVeyor') {
     
         (New-Object -TypeName 'System.Net.WebClient').UploadFile(
 
-            "https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)",
+            "https://ci.appveyor.com/api/testresults/nunit/$($ENV:APPVEYOR_JOB_ID)",
             $TestFilePath
         )
     }
@@ -76,12 +76,12 @@ Task Build -Depends Test {
     # Bump the module version
     try {
     
-        $Ver = Get-NextPSGalleryVersion -Name $env:BHProjectName -ErrorAction Stop
-        Update-Metadata -Path $env:BHPSModuleManifest -PropertyName ModuleVersion -Value $Ver -ErrorAction Stop
+        $Ver = Get-NextPSGalleryVersion -Name $ENV:BHProjectName -ErrorAction Stop
+        Update-Metadata -Path $ENV:BHPSModuleManifest -PropertyName ModuleVersion -Value $Ver -ErrorAction Stop
     }
     catch {
     
-        "Failed to update version for '$env:BHProjectName': $_.`ncontinuing with existing version" |
+        "Failed to update version for '$ENV:BHProjectName': $_.`ncontinuing with existing version" |
         Write-Output
     }
     Write-Output -InputObject "`n"
