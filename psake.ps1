@@ -26,7 +26,7 @@ Task Init {
     Write-Output -InputObject $Lines
     Set-Location -Path $ProjectRoot
     Write-Output -InputObject "`nBuild system details:"
-    Get-Item -Filter ENV:BH*
+    Get-Item -Path $ProjectRoot -Filter ENV:BH*
 }
 
 Task Check -Depends Init {
