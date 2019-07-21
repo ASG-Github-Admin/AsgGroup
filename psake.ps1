@@ -12,10 +12,7 @@ Properties {
     $Lines = '----------------------------------------------------------------------'
 
     $Verbose = @{ }
-    if ($ENV:BHCommitMessage -match "!verbose") {
-
-        $Verbose = @{ Verbose = $True }
-    }
+    if ($ENV:BHCommitMessage -match "!verbose") { $Verbose = @{ Verbose = $True } }
 }
 
 Task Default -Depends Deploy
@@ -44,8 +41,6 @@ Task Test -Depends Check {
 
     # Gather test results. Store them in a variable and file
     $TestFilePath = "$ProjectRoot\$TestFileName"
-    Out-LogFile -Path $env:TEMP\Test.log -Level Error -Entry Test
-    Get-Content -Path $env:TEMP\Test.log
     $TestRslts = Invoke-Pester -Path $ProjectRoot\Tests -PassThru -OutputFormat NUnitXml -OutputFile $TestFilePath
 
     # In Appveyor?  Upload our tests! #Abstract this into a function?
