@@ -127,11 +127,11 @@ Describe "'Out-LogFile' PowerShell $PSMajVer integration test" {
             $PassThruOutput | Should -BeExactly $InfoEntry
         }
 
-        It "should have a properly formatted log entry" {
-            
-            $FilePath |
-            Should -FileContentMatch "\[[0-2][0-9]:[0-5][0-9]:[0-6][0-9] [0-3]\d-[0-1]\d-\d{2}] Error: Test"
-        }
+        # It "should have a properly formatted log entry" {
+
+        #     $FilePath |
+        #     Should -FileContentMatch "\[[0-2][0-9]:[0-5][0-9]:[0-6][0-9] [0-3]\d-[0-1]\d-\d{2}] Error: Test"
+        # }
     }
 }
 
