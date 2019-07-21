@@ -17,7 +17,7 @@ Describe "General project validation: '$ModuleName'" {
 
         $Contents = Get-Content -Path $File.FullName -ErrorAction Stop
         $Errors = $null
-        $null = [System.Management.Automation.PSParser]::Tokenize($Contents, [ref] $Rrrors)
+        $null = [System.Management.Automation.PSParser]::Tokenize($Contents, [ref] $Errors)
         $Errors.Count | Should Be 0
     }
 

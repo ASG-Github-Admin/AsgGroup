@@ -72,7 +72,7 @@ function Out-LogFile {
         try {
     
             # String output to file
-            $EntryDateTime = Get-Date -Format -UFormat "%Y-%m-%d %H:%M:%S"
+            $EntryDateTime = Get-Date -UFormat "%Y-%m-%d %H:%M:%S"
             Write-Debug -Message "Adding $Level '$Entry' with time stamp of '$EntryDateTime' to '$Path'"
             Write-Verbose -Message "Adding entry string to file"
             Out-File -InputObject "[$EntryDateTime] $Level`: $Entry" -FilePath $Path -Append

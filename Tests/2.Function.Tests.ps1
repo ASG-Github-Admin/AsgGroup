@@ -1,4 +1,5 @@
-Import-Module -Name $ENV:BHPSModulePath -Force
+if ($ENV:BHPSModulePath) { Import-Module -Name $ENV:BHPSModulePath -Force }
+else { Import-Module -Name "$PSScriptRoot\$(Split-Path -Path $PSScriptRoot -Parent)" -Force }
 
 $PSMajVer = $PSVersionTable.PSVersion.Major
 
@@ -60,32 +61,34 @@ Describe "'New-Credential' PowerShell $PSMajVer integration test" {
     }
 }
 
-Describe "'New-EncryptedPasswordFile' PowerShell $PSMajVer integration test" {
+if ([bool] ([Environment]::GetCommandLineArgs() -like '-noni*') -eq $true) {
 
-    Context "Strict mode" {
+    Describe "'New-EncryptedPasswordFile' PowerShell $PSMajVer integration test" {
 
-        Set-StrictMode -Version Latest
+        Context "Strict mode" {
 
-        # Preparation
-        Mock Read-Host { 
+            Set-StrictMode -Version Latest
 
-            $SecStr = [securestring]::new()
-            "Test".ToCharArray() | ForEach-Object -Process { $SecStr.AppendChar($PSItem) }
-            return $SecStr
-        }
+            # Preparation
+            Mock Read-Host { 
 
-        # Function call
-        $Output = New-EncryptedPasswordFile -Path TestDrive:\PasswdFile
+                $SecStr = [securestring]::new()
+                "Test".ToCharArray() | ForEach-Object -Process { $SecStr.AppendChar($PSItem) }
+                return $SecStr
+            }
+
+            # Function call
+            $Output = New-EncryptedPasswordFile -Path TestDrive:\PasswdFile
     
-        It "should have created an encrypted password file" {
+            It "should have created an encrypted password file" {
         
-            $Output | Should -BeNullOrEmpty
-            Test-Path -Path TestDrive:\PasswdFile -PathType Leaf | Should -BeTrue
-            (Get-Item -Path TestDrive:\PasswdFile).Length | Should -BeGreaterThan 0
+                $Output | Should -BeNullOrEmpty
+                Test-Path -Path TestDrive:\PasswdFile -PathType Leaf | Should -BeTrue
+                (Get-Item -Path TestDrive:\PasswdFile).Length | Should -BeGreaterThan 0
+            }
         }
     }
 }
-
 Describe "'Out-LogFile' PowerShell $PSMajVer integration test" {
 
     Context "Strict mode" {
