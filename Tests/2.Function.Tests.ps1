@@ -61,7 +61,7 @@ Describe "'New-Credential' PowerShell $PSMajVer integration test" {
     }
 }
 
-if ([bool] ([Environment]::GetCommandLineArgs() -like '-noni*') -eq $true) {
+if ([bool] ([Environment]::GetCommandLineArgs() -like '-noni*') -eq $false) {
 
     Describe "'New-EncryptedPasswordFile' PowerShell $PSMajVer integration test" {
 
@@ -128,14 +128,16 @@ Describe "'Out-LogFile' PowerShell $PSMajVer integration test" {
         }
 
         It "should have a properly formatted log entry" {
-            
-            Mock Get-Date { return "23:59:59 31-01-99" }
+
             Out-LogFile -Path $FilePath -Level Error -Entry Test
             $FilePath |
             Should -FileContentMatch "^\[[0-2][0-9]:[0-5][0-9]:[0-6][0-9] [0-3]\d-[0-1]\d-\d{2}] Error: Test$"
         }
     }
 }
+
+Out-LogFile -Path $env:TEMP\testlog.log -Level Error -Entry test
+Get-Content -Path $env:TEMP\testlog.log 
 
 Describe "'Test-RemotePowerShell' PowerShell $PSMajVer integration test" {
 
