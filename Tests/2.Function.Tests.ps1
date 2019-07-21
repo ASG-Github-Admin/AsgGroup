@@ -136,9 +136,6 @@ Describe "'Out-LogFile' PowerShell $PSMajVer integration test" {
     }
 }
 
-Out-LogFile -Path $env:TEMP\testlog.log -Level Error -Entry test
-Get-Content -Path $env:TEMP\testlog.log 
-
 Describe "'Test-RemotePowerShell' PowerShell $PSMajVer integration test" {
 
     Context "Strict mode" {

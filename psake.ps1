@@ -44,6 +44,8 @@ Task Test -Depends Check {
 
     # Gather test results. Store them in a variable and file
     $TestFilePath = "$ProjectRoot\$TestFileName"
+    Out-LogFile -Path $env:TEMP\Test.log -Level Error -Entry Test
+    Get-Content -Path $env:TEMP\Test.log
     $TestRslts = Invoke-Pester -Path $ProjectRoot\Tests -PassThru -OutputFormat NUnitXml -OutputFile $TestFilePath
 
     # In Appveyor?  Upload our tests! #Abstract this into a function?
@@ -82,7 +84,7 @@ Task Build -Depends Test {
     }
     catch {
 
-        "Failed to update version for '$ENV:BHProjectName': $_.`ncontinuing with existing version" |
+        "Failed to update version for '$ENV:BHProjectName': $PSItem.`ncontinuing with existing version" |
         Write-Output
     }
 }
