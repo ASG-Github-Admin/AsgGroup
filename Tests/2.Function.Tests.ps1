@@ -128,8 +128,7 @@ Describe "'Out-LogFile' PowerShell $PSMajVer integration test" {
         }
 
         It "should have a properly formatted log entry" {
-
-            Out-LogFile -Path $FilePath -Level Error -Entry Test
+            
             $FilePath |
             Should -FileContentMatch "\[[0-2][0-9]:[0-5][0-9]:[0-6][0-9] [0-3]\d-[0-1]\d-\d{2}] Error: Test"
         }
