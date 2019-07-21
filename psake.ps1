@@ -79,20 +79,16 @@ Task Build -Depends Test {
     }
     catch {
 
-        "Failed to update version for '$ENV:BHProjectName': $PSItem.`ncontinuing with existing version" |
+        "Failed to update version for '$ENV:BHProjectName': $PSItem.`nContinuing with existing version" |
         Write-Output
     }
+    Write-Output -InputObject "`n"
 }
 
 Task Deploy -Depends Build {
 
     Write-Output -InputObject $Lines
+    Write-Output -InputObject $ProjectRoot
 
-    $Params = @{
-
-        Path    = $ProjectRoot
-        Force   = $true
-        Recurse = $false # We keep psdeploy artifacts, avoid deploying those : )
-    }
-    Invoke-PSDeploy @Verbose @Params
+    Invoke-PSDeploy -Path $ProjectRoot -Force @Verbose
 }
