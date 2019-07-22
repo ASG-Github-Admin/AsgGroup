@@ -27,23 +27,29 @@ Task Init {
     Write-Output -InputObject "`n"
 }
 
+# Module check with a PowerShell script analyser
 Task Check -Depends Init {
 
     Write-Output -InputObject $Lines
     Write-Output -InputObject "`nStatus: Checking files with 'PSScriptAnalyzer'"
-    Invoke-ScriptAnalyzer -Path $ProjectRoot | Format-Table -AutoSize
+    $Analysis = Invoke-ScriptAnalyzer -Path $ProjectRoot | Format-Table -AutoSize
+    if ($Analysis.Severity -contains "Error" -or "Parse Error") {
+
+        Write-Error -Message "Build failed due to errors found during analysis."
+    }
 }
 
+# Module testing
 Task Test -Depends Check {
 
     Write-Output -InputObject $Lines
     Write-Output -InputObject "`nStatus: Testing with PowerShell $PSVerMaj`n"
 
-    # Gather test results. Store them in a variable and file
+    # Test result collection within variable and file
     $TestFilePath = "$ProjectRoot\$TestFileName"
     $TestRslts = Invoke-Pester -Path $ProjectRoot\Tests -PassThru -OutputFormat NUnitXml -OutputFile $TestFilePath
 
-    # In Appveyor?  Upload our tests! #Abstract this into a function?
+    # File upload when build system is 'AppVeyor' 
     if ($ENV:BHBuildSystem -eq 'AppVeyor') {
 
         (New-Object -TypeName 'System.Net.WebClient').UploadFile(
@@ -55,8 +61,7 @@ Task Test -Depends Check {
 
     Remove-Item -Path $TestFilePath -Force -ErrorAction SilentlyContinue
 
-    # Failed tests?
-    # Need to tell psake or it will proceed to the deployment. Danger!
+    # Failed test stop
     if ($TestRslts.FailedCount -gt 0) {
 
         Write-Error -Message "Build failed due to '$($TestRslts.FailedCount)' failed tests."
@@ -64,14 +69,14 @@ Task Test -Depends Check {
     Write-Output -InputObject "`n"
 }
 
+# Module loaded, read the exported functions, update the '.psd1' manifest file 'FunctionsToExport' value
 Task Build -Depends Test {
 
     Write-Output -InputObject $Lines
 
-    # Load the module, read the exported functions, update the psd1 FunctionsToExport
     Set-ModuleFunction
 
-    # Bump the module version
+    # Module version bumped
     try {
 
         $Ver = Get-NextNugetPackageVersion -Name $ENV:BHProjectName -ErrorAction Stop
@@ -85,6 +90,7 @@ Task Build -Depends Test {
     Write-Output -InputObject "`n"
 }
 
+# Module deployment
 Task Deploy -Depends Build {
 
     Write-Output -InputObject "$Lines`n"

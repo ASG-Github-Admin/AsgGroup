@@ -1,4 +1,4 @@
-![Build status](https://ci.appveyor.com/api/github/webhook?id=82juhi421dol33i6)
+![Build status](https://ci.appveyor.com/projects/status/82juhi421dol33i6)
 ---
 
 
@@ -28,7 +28,7 @@
 <p>This project is licensed under the GNU General Public License v3.0 - see the <a href="LICENSE.md">LICENSE.md</a> file for details.</p>
 <h2 id="acknowledgments">Acknowledgments</h2>
 <ul>
-<li>Warren F, a.k.a Rambling Cookie Monster - <a href="http://ramblingcookiemonster.github.io/">ramblingcookiemonster.github.io</a></li>
+<li>Warren Frame - <a href="http://ramblingcookiemonster.github.io/">ramblingcookiemonster.github.io</a></li>
 <li>Kevin Marquette - <a href="https://powershellexplained.com/">powershellexplained.com</a></li>
 </ul>
 

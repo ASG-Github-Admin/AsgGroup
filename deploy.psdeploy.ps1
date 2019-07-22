@@ -1,24 +1,26 @@
-# Generic module deployment.
-#
-# ASSUMPTIONS:
-#
-# * folder structure either like:
-#
-#   - RepoFolder
-#     - This PSDeploy file
-#     - ModuleName
-#       - ModuleName.psd1
-#
-#   OR the less preferable:
-#
-#   - RepoFolder
-#     - RepoFolder.psd1
-#
-# * Nuget key in $ENV:NugetApiKey
-#
-# * Set-BuildEnvironment from BuildHelpers module has populated ENV:BHPSModulePath and related variables
+# Generic module deployment
+# Deploys/publishes PowerShell module depending on build system utilised
 
-# Publish to gallery with a few restrictions
+<#
+ASSUMPTIONS:
+
+* folder structure either like:
+
+  - RepoFolder
+    - This PSDeploy file
+    - ModuleName
+      - ModuleName.psd1
+
+  OR the less preferable:
+
+  - RepoFolder
+    - RepoFolder.psd1
+
+* Nuget key in $ENV:NugetApiKey
+* Set-BuildEnvironment from BuildHelpers module has populated ENV:BHPSModulePath and related variables
+#>
+
+# PowerShell Gallery publish when conditions met
 if (
 
     $env:BHPSModulePath -and
@@ -39,6 +41,7 @@ if (
 }
 else {
 
+    # Warning for skipped deployment
     "Skipping deployment.`n" +
     "`nTo deploy, ensure that:`n" +
     "`t* You are in a known build system (Current: $ENV:BHBuildSystem)`n" +
@@ -47,7 +50,7 @@ else {
     Write-Warning
 }
 
-# Publish to AppVeyor if we're in AppVeyor
+# AppVeyor publish if build system is 'AppVeyor'
 if (
 
     $env:BHPSModulePath -and
