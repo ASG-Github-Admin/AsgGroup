@@ -40,10 +40,10 @@ if (
 else {
 
     "Skipping deployment.`n" +
-    "To deploy, ensure that:`n" +
+    "`nTo deploy, ensure that:`n" +
     "`t* You are in a known build system (Current: $ENV:BHBuildSystem)`n" +
     "`t* You are committing to the master branch (Current: $ENV:BHBranchName)`n" +
-    "`t* Your commit message includes !deploy (Current: $ENV:BHCommitMessage)" |
+    "`t* Your commit message includes !deploy (Current: $ENV:BHCommitMessage)`n" |
     Write-Warning
 }
 
