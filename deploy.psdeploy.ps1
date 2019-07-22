@@ -26,8 +26,6 @@ if (
     $env:BHCommitMessage -match '!deploy'
 ) {
 
-    Write-Output "1"
-
     Deploy Module {
 
         By PSGalleryModule {
@@ -44,7 +42,7 @@ else {
     "`t* You are in a known build system (Current: $ENV:BHBuildSystem)`n" +
     "`t* You are committing to the master branch (Current: $ENV:BHBranchName) `n" +
     "`t* Your commit message includes !deploy (Current: $ENV:BHCommitMessage)" |
-    Write-Output
+    Write-Warning
 }
 
 # Publish to AppVeyor if we're in AppVeyor
@@ -53,8 +51,6 @@ if (
     $env:BHPSModulePath -and
     $env:BHBuildSystem -eq 'AppVeyor'
 ) {
-
-    Write-Output "2"
 
     Deploy DeveloperBuild {
 
