@@ -19,22 +19,27 @@
 
 # Publish to gallery with a few restrictions
 if (
+
     $env:BHPSModulePath -and
     $env:BHBuildSystem -ne 'Unknown' -and
     $env:BHBranchName -eq "master" -and
     $env:BHCommitMessage -match '!deploy'
 ) {
+
+    Write-Output "1"
+
     Deploy Module {
+
         By PSGalleryModule {
+
             FromSource $ENV:BHPSModulePath
             To PSGallery
-            WithOptions @{
-                ApiKey = $ENV:NugetApiKey
-            }
+            WithOptions @{ ApiKey = $ENV:NugetApiKey }
         }
     }
 }
 else {
+
     "Skipping deployment: To deploy, ensure that...`n" +
     "`t* You are in a known build system (Current: $ENV:BHBuildSystem)`n" +
     "`t* You are committing to the master branch (Current: $ENV:BHBranchName) `n" +
@@ -44,16 +49,20 @@ else {
 
 # Publish to AppVeyor if we're in AppVeyor
 if (
+
     $env:BHPSModulePath -and
     $env:BHBuildSystem -eq 'AppVeyor'
 ) {
+
+    Write-Output "2"
+
     Deploy DeveloperBuild {
+
         By AppVeyorModule {
+
             FromSource $ENV:BHPSModulePath
             To AppVeyor
-            WithOptions @{
-                Version = $env:APPVEYOR_BUILD_VERSION
-            }
+            WithOptions @{ Version = $env:APPVEYOR_BUILD_VERSION }
         }
     }
 }
