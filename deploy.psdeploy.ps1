@@ -39,7 +39,7 @@ if (
 }
 else {
 
-    "`nSkipping deployment." +
+    "Skipping deployment.`n" +
     "To deploy, ensure that:`n" +
     "`t* You are in a known build system (Current: $ENV:BHBuildSystem)`n" +
     "`t* You are committing to the master branch (Current: $ENV:BHBranchName)`n" +

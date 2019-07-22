@@ -87,7 +87,7 @@ Task Build -Depends Test {
 
 Task Deploy -Depends Build {
 
-    Write-Output -InputObject $Lines
+    Write-Output -InputObject "$Lines`n"
 
     Invoke-PSDeploy -Path $ProjectRoot -Force @Verbose
 }
