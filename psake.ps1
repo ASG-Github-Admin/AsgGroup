@@ -34,7 +34,9 @@ Task Check -Depends Init {
     Write-Output -InputObject "`nStatus: Checking files with 'PSScriptAnalyzer'"
     $Analysis = Invoke-ScriptAnalyzer -Path $ProjectRoot | Format-Table -AutoSize
     $Analysis
-    if ($Analysis.Severity -contains "Error" -or "Parse Error") {
+    $Analysis.Severity
+    $Analysis.Severity -contains "Error" -or "ParseError"
+    if ($Analysis.Severity -contains "Error" -or "ParseError") {
 
         Write-Error -Message "Build failed due to errors found during analysis."
     }
