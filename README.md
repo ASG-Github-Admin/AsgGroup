@@ -1,4 +1,4 @@
-![Build status](https://ci.appveyor.com/api/projects/status/82juhi421dol33i6)
+[![Build status](https://ci.appveyor.com/api/projects/status/82juhi421dol33i6?svg=true)](https://github.com/ASG-Github-Admin/AsgGroup)
 ---
 
 

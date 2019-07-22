@@ -1,16 +1,24 @@
-# PSake makes variables declared here available in other scriptblocks
-# Init some things
+# Psake makes variables declared here available in other scriptblocks
+# Initialise additional variables 
 Properties {
 
     # Find the build folder based on build system
     $ProjectRoot = $ENV:BHProjectPath
     if (-not $ProjectRoot) { $ProjectRoot = $PSScriptRoot }
 
+    # UNIX formatted time and date stamp
     $TimeStamp = Get-Date -UFormat "%Y%m%d-%H%M%S"
+
+    # PowerShell major version
     $PSVerMaj = $PSVersionTable.PSVersion.Major
+
+    # XML file name for test results
     $TestFileName = "TestResults_PS$PSVerMaj`_$TimeStamp.xml"
+
+    # Text separator on output
     $Lines = '----------------------------------------------------------------------'
 
+    # Verbose option for build
     $Verbose = @{ }
     if ($ENV:BHCommitMessage -match "!verbose") { $Verbose = @{ Verbose = $True } }
 }
@@ -18,6 +26,7 @@ Properties {
 Task Default -Depends Deploy
 Write-Output -InputObject "`n"
 
+# Build system details displayed
 Task Init {
 
     Write-Output -InputObject $Lines
