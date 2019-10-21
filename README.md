@@ -7,7 +7,6 @@
 <h1 id="asggroup">AsgGroup</h1>
 <p>This is a generic module for performing basic tasks in PowerShell. It was originally designed in version 5.1, but has been uplifted for use in PowerShell core.</p>
 <h2 id="getting-started">Getting Started</h2>
-<p>These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.</p>
 <h3 id="prerequisites">Prerequisites</h3>
 <p>You will need to install PowerShell core - at least version 6.2.</p>
 <h2 id="deployment">Deployment</h2>
