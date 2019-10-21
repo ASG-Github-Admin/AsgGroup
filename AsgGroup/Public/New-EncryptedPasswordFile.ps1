@@ -15,16 +15,6 @@
     -----------
     This creates an encrypted password file 'Passwd.txt' in the 'C:\PowerShell Passwords' directory.
 
-    .EXAMPLE
-    PS C:\PS> New-EncryptedPasswordFile -Path "C:\PowerShell Passwords\Passwd.txt"
-
-    Description
-    -----------
-    This creates an encrypted password file 'Passwd.txt' in the 'C:\PowerShell Passwords' directory.
-
-    .PARAMETER Password
-    Specifies a secure string object containing the password.
-
     .PARAMETER Path
     Specifies a path for the file to be created.
 
