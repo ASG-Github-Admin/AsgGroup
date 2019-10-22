@@ -46,7 +46,7 @@ function ConvertFrom-EncryptedString {
         
         # Encrypted string in the form of a string object
         [Parameter(Mandatory, ValueFromPipeline)]
-        [ValidateNotNullOrEmpty]
+        [ValidateNotNullOrEmpty()]
         [string[]] $String
     )
 
@@ -70,13 +70,16 @@ function ConvertFrom-EncryptedString {
                 Write-Verbose -Message "Converting the encrypted string to a secure string"
                 $SecStr = ConvertTo-SecureString -String $PSItem
 
-                # Convert the secure string to a string and write out
+                # Convert the secure string to a string
                 Write-Debug -Message "Converting the secure string to a string"
                 Write-Verbose -Message "Converting the secure string to a string"
-                Write-Output -InputObject [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
+                $Str = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
             
                     [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecStr)
                 )
+
+                # Write the string out
+                Write-Output -InputObject $Str
             }
         }
         catch { Write-Error -ErrorRecord $PSItem -EA $CallerEA }
