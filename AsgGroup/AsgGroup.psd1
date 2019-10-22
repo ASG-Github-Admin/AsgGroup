@@ -12,7 +12,7 @@
 RootModule = 'AsgGroup.psm1'
 
 # Version number of this module.
-ModuleVersion = '2.0.3'
+ModuleVersion = '2.1.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -70,7 +70,7 @@ FormatsToProcess = 'ASGGroup.Format.ps1xml'
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = 'Add-PSModulePath', 'New-Credential', 'New-EncryptedPasswordFile', 
-               'Out-LogFile', 'Test-RemotePowerShell'
+               'Out-LogFile', 'Test-RemotePowerShell', 'ConvertFrom-EncryptedString'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()

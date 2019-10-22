@@ -159,3 +159,22 @@ Describe "'Test-RemotePowerShell' PowerShell $PSMajVer integration test" {
         }
     }
 }
+
+Describe "'ConvertFrom-EncryptedString' PowerShell $PSMajVer integration test" {
+    Context "Strict mode" {
+
+        Set-StrictMode -Version Latest
+
+        # Preparation
+        $EncStr = ConvertFrom-SecureString -SecureString (ConvertTo-SecureString -String "a1" -AsPlainText -Force)
+
+        # Function call
+        $Output = ConvertFrom-EncryptedString -String $EncStr
+
+        It "should convert an encrypted string to a string" {
+            $Output | Should -BeTrue
+            $Output | Should -BeOfType [string]
+            $Output | Should -BeExactly "a1"
+        }
+    }
+}
